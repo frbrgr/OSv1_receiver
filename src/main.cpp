@@ -39,7 +39,6 @@ bool is_long_pulse(unsigned long d)
 void emit_bit(uint8_t b, uint8_t bit_pos)
 {
     bitWrite(message, bit_pos, b);
-    Serial.print(b);
 }
 
 void setup()
@@ -49,7 +48,7 @@ void setup()
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite(LED_BUILTIN, LOW);
     Serial.begin(19200);
-    Serial.println("Hello!");
+    Serial.println("OSv1_receiver");
 }
 
 void loop()
@@ -121,16 +120,16 @@ void loop()
                 else
                 {
                     // error
+                    Serial.println("Error after bit " + String(decoded_bits) + " - pulse length was (us) " + String(microdiff));
                     state        = states::NONE;
                     decoded_bits = 0;
                     message      = 0;
                 }
                 if (decoded_bits >= 32)
                 {
+                    // full message received
                     state        = states::NONE;
                     decoded_bits = 0;
-                    Serial.println("MSG");
-                    Serial.println(message, BIN);
                     Serial.println(message, HEX);
                     message    = 0;
                     last_bit   = 1;
