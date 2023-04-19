@@ -38,7 +38,7 @@ bool is_long_pulse(unsigned long d)
 
 void emit_bit(uint8_t b, uint8_t bit_pos)
 {
-    bitWrite(message, 31 - bit_pos, b);
+    bitWrite(message, bit_pos, b);
     Serial.print(b);
 }
 
