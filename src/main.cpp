@@ -1,4 +1,7 @@
 #include <Arduino.h>
+#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd{};
 
 volatile bool edge = false;
 
@@ -49,6 +52,8 @@ void setup()
     digitalWrite(LED_BUILTIN, LOW);
     Serial.begin(19200);
     Serial.println("OSv1_receiver");
+    lcd.begin();
+    lcd.print("OSv1_receiver");
 }
 
 void loop()
@@ -124,6 +129,7 @@ void loop()
                     state        = states::NONE;
                     decoded_bits = 0;
                     message      = 0;
+                    lcd.scrollDisplayRight();
                 }
                 if (decoded_bits >= 32)
                 {
@@ -131,6 +137,8 @@ void loop()
                     state        = states::NONE;
                     decoded_bits = 0;
                     Serial.println(message, HEX);
+                    lcd.clear();
+                    lcd.print(message, HEX);
                     message    = 0;
                     last_bit   = 1;
                     half_short = true;
