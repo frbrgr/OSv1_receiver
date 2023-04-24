@@ -47,6 +47,15 @@ void emit_bit(uint8_t b, uint8_t bit_pos)
     bitWrite(message, bit_pos, b);
 }
 
+void reset_state()
+{
+    state        = states::NONE;
+    decoded_bits = 0;
+    message      = 0;
+    last_bit     = 1;
+    half_short   = true;
+}
+
 void setup()
 {
     pinMode(2, INPUT);
@@ -129,26 +138,20 @@ void loop()
                 {
                     // error
                     Serial.println("Error after bit " + String(decoded_bits) + " - pulse length was (us) " + String(microdiff));
-                    state        = states::NONE;
-                    decoded_bits = 0;
-                    message      = 0;
+                    reset_state();
                     lcd.scrollDisplayRight();
                 }
                 if (decoded_bits >= 32)
                 {
                     // full message received
-                    state        = states::NONE;
-                    decoded_bits = 0;
+                    d.set_data(message);
                     Serial.println(message, HEX);
+                    Serial.println(d.get_temp_string());
                     lcd.clear();
                     lcd.print(message, HEX);
-                    d.set_data(message);
-                    Serial.println(d.get_temp_string());
                     lcd.setCursor(0, 1);
                     lcd.print(d.get_temperature(), 1); // LCD can't display '°' character
-                    message    = 0;
-                    last_bit   = 1;
-                    half_short = true;
+                    reset_state();
                 }
                 break;
             }
