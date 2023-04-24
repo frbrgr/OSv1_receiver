@@ -1,6 +1,9 @@
 #include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
 
+#include "decoder.hpp"
+
+Decoder d;
 LiquidCrystal_I2C lcd{};
 
 volatile bool edge = false;
@@ -139,6 +142,10 @@ void loop()
                     Serial.println(message, HEX);
                     lcd.clear();
                     lcd.print(message, HEX);
+                    d.set_data(message);
+                    Serial.println(d.get_temp_string());
+                    lcd.setCursor(0, 1);
+                    lcd.print(d.get_temperature(), 1); // LCD can't display '°' character
                     message    = 0;
                     last_bit   = 1;
                     half_short = true;
