@@ -28,7 +28,7 @@ union message
 /** Validate the message checksum. We add up the three data bytes and compare them to the original checksum byte. */
 static bool validate_message(const uint32_t& msg)
 {
-    auto b   = reinterpret_cast<const char*>(&msg);
+    auto b   = reinterpret_cast<const byte*>(&msg);
     byte sum = 0;
     sum += b[0];
     sum += b[1];
