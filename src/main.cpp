@@ -54,6 +54,7 @@ void reset_state()
     message      = 0;
     last_bit     = 1;
     half_short   = true;
+    digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void setup()
@@ -61,7 +62,7 @@ void setup()
     pinMode(2, INPUT);
     attachInterrupt(digitalPinToInterrupt(2), my_isr, CHANGE);
     pinMode(LED_BUILTIN, OUTPUT);
-    digitalWrite(LED_BUILTIN, LOW);
+    digitalWrite(LED_BUILTIN, HIGH);
     Serial.begin(19200);
     Serial.println("OSv1_receiver");
     lcd.begin();
@@ -88,7 +89,6 @@ void loop()
                 if (microdiff > 5700 and microdiff < 5800)
                 {
                     state = states::SYNC2;
-                    digitalWrite(LED_BUILTIN, HIGH);
                 }
                 else
                 {
@@ -102,7 +102,6 @@ void loop()
                 {
                     // full sync
                     state = states::MSG;
-                    digitalWrite(LED_BUILTIN, LOW);
                 }
                 else
                 {
@@ -145,7 +144,6 @@ void loop()
                 {
                     // full message received
                     d.set_data(message);
-                    Serial.println(message, HEX);
                     Serial.println(d.get_temp_string());
                     lcd.clear();
                     lcd.print(message, HEX);
