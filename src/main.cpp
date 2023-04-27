@@ -77,7 +77,7 @@ void loop()
         {
             case states::NONE:
             {
-                if (microdiff > 4200 and microdiff < 4300)
+                if (microdiff > 4100 and microdiff < 4400)
                 {
                     state = states::SYNC1;
                     digitalWrite(LED_BUILTIN, LOW);
@@ -86,7 +86,7 @@ void loop()
             }
             case states::SYNC1:
             {
-                if (microdiff > 5700 and microdiff < 5800)
+                if (microdiff > 5600 and microdiff < 5900)
                 {
                     state = states::SYNC2;
                 }
@@ -98,7 +98,7 @@ void loop()
             }
             case states::SYNC2:
             {
-                if (microdiff > 5200 and microdiff < 5300)
+                if (microdiff > 5100 and microdiff < 5400)
                 {
                     // full sync
                     state = states::MSG;
